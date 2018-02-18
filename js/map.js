@@ -19,18 +19,30 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
+var X_MIN = 300;
+var X_MAX = 900;
+var Y_MIN = 150;
+var Y_MAX = 500;
+var PRICE_MIN = 1000;
+var PRICE_MAX = 1000000;
+var ROOMS_MIN = 1;
+var ROOMS_MAX = 5;
+var QUESTS_MIN = 1;
+var QUESTS_MAX = 5;
 var MAP_PIN_WIDTH = 50;
 var MAP_PIN_HEIGHT = 70;
-var MAP_PIN_TEMPLATE = document.querySelector('template').content.querySelector('.map__pin');
-var MAP_CARD_TEMPLATE = document.querySelector('template').content.querySelector('.map__card');
+var TEMPLATE = document.querySelector('template').content;
+var MAP_PIN_TEMPLATE = TEMPLATE.querySelector('.map__pin');
+var MAP_CARD_TEMPLATE = TEMPLATE.querySelector('.map__card');
 var FEATURE_ELEMENT_TEMPLATE = MAP_CARD_TEMPLATE.querySelector('.feature');
 var PICTURE_ELEMENT_TEMPLATE = MAP_CARD_TEMPLATE.querySelector('.popup__pictures li');
-var MAP_FILTER_ELEMENT = document.querySelector('.map__filters-container');
+var MAP_ELEMENT = document.querySelector('.map');
+var MAP_FILTER_ELEMENT = MAP_ELEMENT.querySelector('.map__filters-container');
 
 
 var generateRandomInt = function (min, max) {
 
-  if (max !== 0 && !max) {
+  if (typeof max === 'undefined') {
     max = min;
     min = 0;
   }
@@ -41,31 +53,16 @@ var generateRandomInt = function (min, max) {
 
 var generateRandomUniqueNumbers = function (qty) {
   var numbers = [];
-  var number = 0;
 
   for (var i = 0; i < qty; i++) {
-    number = generateRandomInt(1, qty);
-
-    if (isContainsInArray(number, numbers)) {
-      i--;
-    } else {
-      numbers.push(number);
-    }
+    numbers.push(i + 1);
   }
 
-  return numbers;
+  return shuffleArray(numbers);
 };
 
 var getRandomArrayElement = function (array) {
   return array[generateRandomInt(array.length - 1)];
-};
-
-var isContainsInArray = function (element, array) {
-  var index = array.findIndex(function (item) {
-    return item === element;
-  });
-
-  return index !== -1;
 };
 
 var compareRandom = function () {
@@ -88,17 +85,17 @@ var generateAds = function () {
   var y = 0;
 
   for (var i = 0; i < ADS_NUM; i++) {
-    x = generateRandomInt(300, 900);
-    y = generateRandomInt(150, 500);
+    x = generateRandomInt(X_MIN, X_MAX);
+    y = generateRandomInt(Y_MIN, Y_MAX);
     ad = {
       author: 'img/avatars/user0' + uniqueNumbers[i] + '.png',
       offer: {
         title: getRandomArrayElement(TITLES),
         address: x + ', ' + y,
-        price: generateRandomInt(1000, 1000000),
+        price: generateRandomInt(PRICE_MIN, PRICE_MAX),
         type: getRandomArrayElement(TYPES),
-        rooms: generateRandomInt(1, 5),
-        guests: generateRandomInt(1, 10),
+        rooms: generateRandomInt(ROOMS_MIN, ROOMS_MAX),
+        guests: generateRandomInt(QUESTS_MIN, QUESTS_MAX),
         checkin: getRandomArrayElement(TIMES),
         checkout: getRandomArrayElement(TIMES),
         features: shuffleArray(FEATURES).slice(generateRandomInt(FEATURES.length)),
@@ -139,7 +136,7 @@ var changeMapPinElement = function (data, index, element) {
 };
 
 var renderMapPins = function (items) {
-  var mapPinListElement = document.querySelector('.map__pins');
+  var mapPinListElement = MAP_ELEMENT.querySelector('.map__pins');
 
   mapPinListElement.appendChild(createElements(items, MAP_PIN_TEMPLATE, changeMapPinElement));
 };
@@ -181,6 +178,10 @@ var changeMapCardElement = function (data, index, element) {
   element.querySelector('.popup__pictures').textContent = '';
   element.querySelector('.popup__pictures')
       .appendChild(createElements(card.offer.photos, PICTURE_ELEMENT_TEMPLATE, changePictureElement));
+
+  if (index !== data.length - 1) {
+    element.classList.add('hidden');
+  }
 
   return element;
 
