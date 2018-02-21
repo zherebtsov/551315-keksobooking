@@ -242,6 +242,8 @@ textarea:focus
 
     border: 0;
     background: none;
+
+    cursor: pointer;
 }
 
 .map__pin img
@@ -482,6 +484,8 @@ textarea:focus
 
     border: 0;
     background: none;
+
+    cursor: pointer;
 }
 
 .popup__close:active
