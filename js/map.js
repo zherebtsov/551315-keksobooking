@@ -41,8 +41,15 @@ var PICTURE_ELEMENT_TEMPLATE = MAP_CARD_TEMPLATE.querySelector('.popup__pictures
 var MAP_ELEMENT = document.querySelector('.map');
 var MAP_FILTER_ELEMENT = MAP_ELEMENT.querySelector('.map__filters-container');
 var MAP_PIN_MAIN = MAP_ELEMENT.querySelector('.map__pin--main');
+
 var FORM = document.querySelector('.notice__form');
 var ADDRESS_INPUT = FORM.querySelector('#address');
+var TYPE_SELECT = FORM.querySelector('#type');
+var PRICE_INPUT = FORM.querySelector('#price');
+var TIMEIN_SELECT = FORM.querySelector('#timein');
+var TIMEOUT_SELECT = FORM.querySelector('#timeout');
+var ROOM_NUMBER_SELECT = FORM.querySelector('#room_number');
+var CAPACITY_SELECT = FORM.querySelector('#capacity');
 
 var isActivePage = false; // текущее состояние страницы
 
@@ -54,8 +61,7 @@ var generateRandomInt = function (min, max) {
     min = 0;
   }
 
-  var randomNum = min + Math.random() * (max + 1 - min);
-  return Math.floor(randomNum);
+  return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
 var generateRandomUniqueNumbers = function (qty) {
@@ -125,7 +131,7 @@ var createElements = function (data, elementTemplate, cbChangeElement) {
 
   data.forEach(function (value, index) {
     var element = elementTemplate.cloneNode(true);
-    element = cbChangeElement(data, index, element); // правило изменения элемента
+    cbChangeElement(data, index, element); // правило изменения элемента
     fragment.appendChild(element);
   });
 
@@ -141,8 +147,6 @@ var changeMapPinElement = function (data, index, element) {
   element.addEventListener('click', function () {
     openPopupMapCard(item);
   });
-
-  return element;
 };
 
 var renderMapPins = function (items) {
@@ -153,8 +157,6 @@ var renderMapPins = function (items) {
 
 var changeFeatureElement = function (data, index, element) {
   element.className = 'feature feature--' + data[index];
-
-  return element;
 };
 
 var changePictureElement = function (data, index, element) {
@@ -163,8 +165,6 @@ var changePictureElement = function (data, index, element) {
   img.setAttribute('src', data[index]);
   img.setAttribute('width', '100');
   img.setAttribute('height', '100');
-
-  return element;
 };
 
 var renderMapCard = function (card) {
@@ -254,18 +254,19 @@ var getCoordsMapPinMain = function () {
   return coords;
 };
 
-var changeAddressInput = function (address) {
-  ADDRESS_INPUT.value = address;
+var setFieldValue = function (fieldElement, value) {
+  fieldElement.value = value;
 };
 
-var fillAddress = function () {
+var setAddress = function () {
   var pinCoords = getCoordsMapPinMain();
   var address = pinCoords.x + ', ' + pinCoords.y;
-  changeAddressInput(address);
+  setFieldValue(ADDRESS_INPUT, address);
 };
 
 var onContentLoad = function () {
-  fillAddress();
+  setAddress();
+  document.removeEventListener('DOMContentLoaded', onContentLoad);
 };
 
 var onPopupCloseCLick = function () {
@@ -274,11 +275,83 @@ var onPopupCloseCLick = function () {
 
 var onMapPinMainMouseup = function () {
   enablePage();
-  fillAddress();
+  setAddress();
   init();
   MAP_PIN_MAIN.removeEventListener('mouseup', onMapPinMainMouseup);
 };
 
+var onTypeChange = function (evt) {
+  var min = 0;
+
+  switch (evt.target.value) {
+    case 'flat':
+      min = 1000;
+      break;
+    case 'house':
+      min = 5000;
+      break;
+    case 'palace':
+      min = 10000;
+      break;
+    case 'bungalo':
+    default:
+      break;
+  }
+
+  PRICE_INPUT.setAttribute('min', min.toString());
+};
+
+var onTimeinChange = function (evt) {
+  setFieldValue(TIMEOUT_SELECT, evt.target.value);
+};
+
+var onTimeoutChange = function (evt) {
+  setFieldValue(TIMEIN_SELECT, evt.target.value);
+};
+
+var validNumRoomsAccordanceCapacity = function () {
+  var msg = '';
+  var roomNum = Number(ROOM_NUMBER_SELECT.value);
+  var guestNum = Number(CAPACITY_SELECT.value);
+
+  switch (roomNum) {
+    case 1:
+      if (guestNum !== roomNum) {
+        msg = 'В одной комнате можно разместить только одного гостя';
+      }
+      break;
+    case 2:
+    case 3:
+      if (guestNum > roomNum || guestNum === 0) {
+        msg = 'В ' + roomNum + ' комнатах можно разместить от 1 до ' + roomNum + ' гостей';
+      }
+      break;
+    case 100:
+      if (guestNum !== 0) {
+        msg = 'В 100 комнатах нельзя разместить гостей ;)';
+      }
+      break;
+    default:
+      break;
+  }
+
+  CAPACITY_SELECT.setCustomValidity(msg);
+};
+
+var onRoomNumberChange = function () {
+  validNumRoomsAccordanceCapacity();
+};
+
+var onCapacityChange = function () {
+  validNumRoomsAccordanceCapacity();
+};
+
 MAP_PIN_MAIN.addEventListener('mouseup', onMapPinMainMouseup);
+
+TYPE_SELECT.addEventListener('change', onTypeChange);
+TIMEIN_SELECT.addEventListener('change', onTimeinChange);
+TIMEOUT_SELECT.addEventListener('change', onTimeoutChange);
+ROOM_NUMBER_SELECT.addEventListener('change', onRoomNumberChange);
+CAPACITY_SELECT.addEventListener('change', onCapacityChange);
 
 document.addEventListener('DOMContentLoaded', onContentLoad);

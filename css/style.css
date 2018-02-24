@@ -96,6 +96,13 @@ textarea:focus
     box-shadow: 0 0 4px 1px #ff6547;
 }
 
+.map__pin,
+.popup__close,
+select:hover,
+button[type=submit]:hover {
+  cursor: pointer;
+}
+
 .hidden
 {
     display: none;
@@ -242,8 +249,6 @@ textarea:focus
 
     border: 0;
     background: none;
-
-    cursor: pointer;
 }
 
 .map__pin img
@@ -484,8 +489,6 @@ textarea:focus
 
     border: 0;
     background: none;
-
-    cursor: pointer;
 }
 
 .popup__close:active
