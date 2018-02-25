@@ -60,6 +60,18 @@ button[type=submit]:active
     background-color: #ff6d51;
 }
 
+.map__pin,
+.popup__close:hover,
+label.feature:hover,
+select:hover,
+button[type=submit]:hover {
+  cursor: pointer;
+}
+
+input[disabled]:hover {
+  cursor: not-allowed;
+}
+
 input[type=text],
 input[type=number],
 select,
@@ -94,13 +106,6 @@ textarea:focus
 {
     outline: none;
     box-shadow: 0 0 4px 1px #ff6547;
-}
-
-.map__pin,
-.popup__close,
-select:hover,
-button[type=submit]:hover {
-  cursor: pointer;
 }
 
 .hidden
