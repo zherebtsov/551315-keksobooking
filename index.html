@@ -121,7 +121,7 @@
 
       <fieldset class="form__element form__element--wide" disabled>
         <label for="address">Адрес</label>
-        <input id="address" name="address" type="text" disabled>
+        <input id="address" name="address" type="text" readonly>
       </fieldset>
 
       <fieldset class="form__element" disabled>
@@ -216,6 +216,13 @@
       </fieldset>
     </form>
   </div>
+
+  <div class="alert-wrapper">
+    <div class="alert alert--disabled">
+      <span></span>
+    </div>
+  </div>
+
 </main>
 
 <footer class="footer container">
@@ -250,7 +257,7 @@
       <li class="feature feature--elevator"></li>
       <li class="feature feature--conditioner"></li>
     </ul>
-    <p>Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.</p>
+    <p class="popup__description">Великолепная квартира-студия в центре Токио. Подходит как туристам, так и бизнесменам. Квартира полностью укомплектована и недавно отремонтирована.</p>
     <ul class="popup__pictures">
       <li><img src=""></li>
     </ul>
@@ -266,6 +273,8 @@
 <script src="js/pin.js"></script>
 <script src="js/card.js"></script>
 <script src="js/form.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/toast.js"></script>
 
 </body>
 </html>

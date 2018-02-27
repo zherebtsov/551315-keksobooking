@@ -68,10 +68,6 @@ button[type=submit]:hover {
   cursor: pointer;
 }
 
-input[disabled]:hover {
-  cursor: not-allowed;
-}
-
 input[type=text],
 input[type=number],
 select,
@@ -865,4 +861,35 @@ textarea:focus
 .footer-social-item-vk
 {
     background-position: -10px -10px;
+}
+
+.alert-wrapper {
+  position: fixed;
+  top: 10%;
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+}
+
+.alert {
+  position: relative;
+  padding: 10px;
+  background-color: rgba(255,86,53, 0.8);
+  border-radius: 10px;
+  text-align: center;
+  display: inline-block;
+  max-width: 250px;
+}
+
+.alert span {
+  color: #fff;
+  font-size: 13px;
+}
+
+.alert--disabled {
+  display: none;
+}
+
+.invalid-field {
+  border: 2px solid red !important;
 }

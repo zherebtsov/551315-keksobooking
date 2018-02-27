@@ -10,6 +10,8 @@
   };
 
   var disable = function () {
+    window.map.disable();
+    window.form.disable();
     isActive = false;
   };
 
