@@ -5,7 +5,7 @@
   var MAP = window.common.MAP;
   var FEATURE_ELEMENT_TEMPLATE = MAP_CARD_TEMPLATE.querySelector('.feature');
   var PICTURE_ELEMENT_TEMPLATE = MAP_CARD_TEMPLATE.querySelector('.popup__pictures li');
-  var MAP_FILTER_ELEMENT = MAP.querySelector('.map__filters-container');
+  var MAP_FILTER_ELEMENT = window.common.MAP_FILTER;
 
   var changeFeatureElement = function (data, index, element) {
     element.className = 'feature feature--' + data[index];
@@ -15,7 +15,7 @@
     var img = element.querySelector('img');
 
     img.setAttribute('src', data[index]);
-    img.setAttribute('width', '100');
+    img.setAttribute('width', '100'); // явно указываем размеры картинки
     img.setAttribute('height', '100');
   };
 

@@ -893,3 +893,7 @@ textarea:focus
 .invalid-field {
   border: 2px solid red !important;
 }
+
+.map__filters--hidden {
+  display: none;
+}

@@ -35,54 +35,58 @@
         action="https://js.dump.academy/keksobooking"
         method="post"
         enctype="multipart/form-data"
-        class="map__filters"
+        class="map__filters map__filters--hidden"
         autocomplete="off"
       >
         <select name="housing-type" id="housing-type" class="map__filter">
-          <option value="any" selected>Любой тип жилья</option>
+          <option value="" selected>Любой тип жилья</option>
           <option value="flat">Квартира</option>
           <option value="house">Дом</option>
           <option value="bungalo">Сарай</option>
         </select>
 
         <select name="housing-price" id="housing-price" class="map__filter">
-          <option value="any" selected>Любая</option>
+          <option value="" selected>Любая цена</option>
           <option value="middle">10000 - 50000&#x20bd;</option>
           <option value="low">до 10000&#x20bd;</option>
           <option value="high">от 50000&#x20bd;</option>
         </select>
 
         <select name="housing-rooms" id="housing-rooms" class="map__filter">
-          <option value="any" selected>Любое число комнат</option>
+          <option value="" selected>Любое число комнат</option>
           <option value="1">Одна комната</option>
           <option value="2">Две комнаты</option>
           <option value="3">Три комнаты</option>
         </select>
 
         <select name="housing-guests" id="housing-guests" class="map__filter">
-          <option value="any" selected>Любое число гостей</option>
+          <option value="" selected>Любое число гостей</option>
           <option value="1">Один гость</option>
           <option value="2">Два гостя</option>
         </select>
 
         <fieldset id="housing-features" class="map__filter-set features">
           <input type="checkbox" name="features" value="wifi" id="filter-wifi">
-          <label class="feature feature--wifi" for="filter-wifi">Wi-Fi</label>
+          <label class="feature feature--wifi" for="filter-wifi" title="Wi-Fi">Wi-Fi</label>
 
           <input type="checkbox" name="features" value="dishwasher" id="filter-dishwasher">
-          <label class="feature feature--dishwasher" for="filter-dishwasher">Посудомоечная машина</label>
+          <label
+            class="feature feature--dishwasher"
+            for="filter-dishwasher"
+            title="Посудомоечная машина"
+          >Посудомоечная машина</label>
 
           <input type="checkbox" name="features" value="parking" id="filter-parking">
-          <label class="feature feature--parking" for="filter-parking">Парковка</label>
+          <label class="feature feature--parking" for="filter-parking" title="Парковка">Парковка</label>
 
           <input type="checkbox" name="features" value="washer" id="filter-washer">
-          <label class="feature feature--washer" for="filter-washer">Стиральная машина</label>
+          <label class="feature feature--washer" for="filter-washer" title="Стиральная машина">Стиральная машина</label>
 
           <input type="checkbox" name="features" value="elevator" id="filter-elevator">
-          <label class="feature feature--elevator" for="filter-elevator">Лифт</label>
+          <label class="feature feature--elevator" for="filter-elevator" title="Лифт">Лифт</label>
 
           <input type="checkbox" name="features" value="conditioner" id="filter-conditioner">
-          <label class="feature feature--conditioner" for="filter-conditioner">Кондиционер</label>
+          <label class="feature feature--conditioner" for="filter-conditioner" title="Кондиционер">Кондиционер</label>
          </fieldset>
       </form>
     </div>
@@ -177,22 +181,26 @@
         <legend>Удобства: Wi-Fi, кухня, парковка, стиралка, лифт, кондиционер</legend>
 
         <input type="checkbox" name="features" value="wifi" id="feature-wifi">
-        <label class="feature feature--wifi" for="feature-wifi">Wi-Fi</label>
+        <label class="feature feature--wifi" for="feature-wifi" title="Wi-Fi">Wi-Fi</label>
 
         <input type="checkbox" name="features" value="dishwasher" id="feature-dishwasher">
-        <label class="feature feature--dishwasher" for="feature-dishwasher">Посудомоечная машина</label>
+        <label
+          class="feature feature--dishwasher"
+          for="feature-dishwasher"
+          title="Посудомоечная машина"
+        >Посудомоечная машина</label>
 
         <input type="checkbox" name="features" value="parking" id="feature-parking">
-        <label class="feature feature--parking" for="feature-parking">Парковка</label>
+        <label class="feature feature--parking" for="feature-parking" title="Парковка">Парковка</label>
 
         <input type="checkbox" name="features" value="washer" id="feature-washer">
-        <label class="feature feature--washer" for="feature-washer">Стиральная машина</label>
+        <label class="feature feature--washer" for="feature-washer" title="Стиральная машина">Стиральная машина</label>
 
         <input type="checkbox" name="features" value="elevator" id="feature-elevator">
-        <label class="feature feature--elevator" for="feature-elevator">Лифт</label>
+        <label class="feature feature--elevator" for="feature-elevator" title="Лифт">Лифт</label>
 
         <input type="checkbox" name="features" value="conditioner" id="feature-conditioner">
-        <label class="feature feature--conditioner" for="feature-conditioner">Кондиционер</label>
+        <label class="feature feature--conditioner" for="feature-conditioner" title="Кондиционер">Кондиционер</label>
       </fieldset>
 
       <fieldset class="form__element form__element--wide" disabled>
@@ -267,7 +275,6 @@
 </template>
 
 <script src="js/common.js"></script>
-<script src="js/data.js"></script>
 <script src="js/pageState.js"></script>
 <script src="js/map.js"></script>
 <script src="js/pin.js"></script>
@@ -275,6 +282,9 @@
 <script src="js/form.js"></script>
 <script src="js/backend.js"></script>
 <script src="js/toast.js"></script>
+<script src="js/filter.js"></script>
+<script src="js/debounce.js"></script>
+<script src="js/validation.js"></script>
 
 </body>
 </html>
