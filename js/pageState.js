@@ -11,6 +11,7 @@
 
   var disable = function () {
     window.map.disable();
+    window.filter.disable();
     window.form.disable();
     isActive = false;
   };

@@ -2,13 +2,16 @@
 
 (function () {
   var MAP = window.common.MAP;
-  var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
+  var KeyCode = {
+    ESC: 27,
+    ENTER: 13
+  };
   var MAP_PIN_MAIN = MAP.querySelector('.map__pin--main');
   var MAP_PIN_MAIN_ARROW_HEIGHT = 18;
   var MIN_Y = 150;
   var MAX_Y = 500;
   var initCoordsMainPin = {};
+  var CLASS_DISABLE = 'map--faded';
 
   var openPopupCard = function (card) {
     window.card.del();
@@ -26,26 +29,26 @@
   };
 
   var onPopupCardEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (evt.keyCode === KeyCode.ESC) {
       closePopupCard();
     }
   };
 
   var onMainPinEnterPress = function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
+    if (evt.keyCode === KeyCode.ENTER) {
       init();
     }
   };
 
   var enable = function () {
-    MAP.classList.remove('map--faded');
+    window.common.enableElement(MAP, CLASS_DISABLE);
   };
 
   var disable = function () {
     window.card.del();
     window.pin.del();
     setCoordsMainPin(initCoordsMainPin);
-    MAP.classList.add('map--faded');
+    window.common.disableElement(MAP, CLASS_DISABLE);
   };
 
   var getCoordsMainPin = function () {
@@ -65,10 +68,17 @@
 
   var onDataLoad = function (data) {
     window.pin.render(data, openPopupCard);
+    window.filter.enable();
+    window.filter.setData(data);
   };
 
   var onError = function (error) {
     window.toast.showMsg('Не удалось загрузить объявления (' + error + ')');
+  };
+
+  var refreshAds = function (data) {
+    window.pin.del();
+    window.pin.render(data, openPopupCard);
   };
 
   var init = function () {
@@ -151,6 +161,8 @@
   document.addEventListener('DOMContentLoaded', onContentLoad);
 
   window.map = {
+    refreshAds: refreshAds,
+    closePopupCard: closePopupCard,
     enable: enable,
     disable: disable
   };

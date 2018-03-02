@@ -3,6 +3,7 @@
 (function () {
   var MAP_PIN_WIDTH = 50;
   var MAP_PIN_HEIGHT = 70;
+  var QTY_PINS = 5;
   var MAP_PIN_TEMPLATE = window.common.TEMPLATE.querySelector('.map__pin');
   var MAP_PIN_LIST_ELEMENT = window.common.MAP.querySelector('.map__pins');
 
@@ -18,8 +19,9 @@
   };
 
   var render = function (items, cbOnPinClick) {
+    var pins = items.slice(0, QTY_PINS);
     MAP_PIN_LIST_ELEMENT.appendChild(
-        window.common.createElements(items, MAP_PIN_TEMPLATE, changePinElement, cbOnPinClick)
+        window.common.createElements(pins, MAP_PIN_TEMPLATE, changePinElement, cbOnPinClick)
     );
   };
 
