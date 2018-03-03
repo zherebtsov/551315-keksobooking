@@ -8,7 +8,7 @@
   var XHR_TIMEOUT = 10000; // 10c
   var SUCCESS_CODE = 200;
 
-  var request = function (method, url, loadingMsg, onLoad, onError, data) {
+  var request = function (method, url, loadingMessage, onLoad, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -39,7 +39,7 @@
       xhr.send();
     }
 
-    window.toast.show(loadingMsg);
+    window.toast.show(loadingMessage);
   };
 
   var get = function (onLoad, onError) {

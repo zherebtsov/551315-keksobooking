@@ -29,7 +29,7 @@
   };
 
   var disable = function () {
-    window.validation.delRedBorder();
+    window.validation.removeRedBorder();
     resetForm();
     window.common.disableElement(FORM, CLASS_DISABLE);
     FORM_ELEMENTS.forEach(function (element) {
@@ -89,27 +89,27 @@
   };
 
   var onCapacityChange = function () {
-    window.validation.delRedBorder(Field.CAPACITY);
+    window.validation.removeRedBorder(Field.CAPACITY);
     Field.CAPACITY.setCustomValidity(
-        window.validation.validNumRoomsToNumGuests(Field.ROOM_NUMBER.value, Field.CAPACITY.value)
+        window.validation.isValidNumRoomsToNumGuests(Field.ROOM_NUMBER.value, Field.CAPACITY.value)
     );
   };
 
   var onSuccess = function () {
-    window.toast.showMsg('Форма успешно отправлена!');
+    window.toast.showMessage('Форма успешно отправлена!');
     window.pageState.disable();
   };
 
   var onError = function (error) {
-    window.toast.showMsg('Не удалось отправить форму (' + error + ')');
+    window.toast.showMessage('Не удалось отправить форму (' + error + ')');
   };
 
   var onTitleInput = function () {
-    window.validation.delRedBorder(Field.TITLE);
+    window.validation.removeRedBorder(Field.TITLE);
   };
 
   var onPriceInput = function () {
-    window.validation.delRedBorder(Field.PRICE);
+    window.validation.removeRedBorder(Field.PRICE);
   };
 
   var onFormSubmit = function (evt) {
