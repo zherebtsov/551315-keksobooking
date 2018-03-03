@@ -17,33 +17,33 @@
     'palace': 10000
   };
 
-  var validNumRoomsToNumGuests = function (numRooms, numGuests) {
-    var msg = '';
-    var room = Number(numRooms);
-    var guest = Number(numGuests);
+  var isValidNumRoomsToNumGuests = function (numberRooms, numberGuests) {
+    var message = '';
+    var room = Number(numberRooms);
+    var guest = Number(numberGuests);
 
     switch (room) {
       case 1:
         if (guest !== room) {
-          msg = 'В одной комнате можно разместить только одного гостя';
+          message = 'В одной комнате можно разместить только одного гостя';
         }
         break;
       case 2:
       case 3:
         if (guest > room || guest === 0) {
-          msg = 'В ' + room + ' комнатах можно разместить от 1 до ' + room + ' гостей';
+          message = 'В ' + room + ' комнатах можно разместить от 1 до ' + room + ' гостей';
         }
         break;
       case 100:
         if (guest !== 0) {
-          msg = 'В 100 комнатах нельзя разместить гостей ;)';
+          message = 'В 100 комнатах нельзя разместить гостей ;)';
         }
         break;
       default:
         break;
     }
 
-    return msg;
+    return message;
   };
 
   var setRedBorder = function () {
@@ -58,7 +58,7 @@
       delete (fields.price);
     }
 
-    if (validNumRoomsToNumGuests(window.form.field.ROOM_NUMBER.value, window.form.field.CAPACITY.value) === '') {
+    if (isValidNumRoomsToNumGuests(window.form.field.ROOM_NUMBER.value, window.form.field.CAPACITY.value) === '') {
       delete (fields.capacity);
     }
 
@@ -71,7 +71,7 @@
 
   };
 
-  var delRedBorder = function (fieldElement) {
+  var removeRedBorder = function (fieldElement) {
     var removeCLass = function (field) {
       if (field.classList.contains(INVALID_CLASS)) {
         field.classList.remove(INVALID_CLASS);
@@ -91,9 +91,9 @@
   };
 
   window.validation = {
-    validNumRoomsToNumGuests: validNumRoomsToNumGuests,
+    isValidNumRoomsToNumGuests: isValidNumRoomsToNumGuests,
     housingToMinPrice: housingToMinPrice,
     setRedBorder: setRedBorder,
-    delRedBorder: delRedBorder
+    removeRedBorder: removeRedBorder
   };
 })();

@@ -14,14 +14,14 @@
   };
 
   var changePictureElement = function (data, index, element) {
-    var img = element.querySelector('img');
+    var image = element.querySelector('img');
 
-    img.setAttribute('src', data[index]);
-    img.setAttribute('width', PICTURE_WIDTH);
-    img.setAttribute('height', PICTURE_HEIGHT);
+    image.setAttribute('src', data[index]);
+    image.setAttribute('width', PICTURE_WIDTH);
+    image.setAttribute('height', PICTURE_HEIGHT);
   };
 
-  var render = function (card, cbOnCloseClick) {
+  var render = function (card, onCloseClick) {
     var parentElement = MAP_FILTER_ELEMENT.parentNode;
     var element = MAP_CARD_TEMPLATE.cloneNode(true);
 
@@ -52,12 +52,12 @@
     } else {
       element.removeChild(element.querySelector('.popup__pictures'));
     }
-    element.querySelector('.popup__close').addEventListener('click', cbOnCloseClick);
+    element.querySelector('.popup__close').addEventListener('click', onCloseClick);
 
     parentElement.insertBefore(element, MAP_FILTER_ELEMENT);
   };
 
-  var del = function () {
+  var remove = function () {
     var mapCardElement = MAP.querySelector('.map__card');
 
     if (mapCardElement) {
@@ -67,6 +67,6 @@
 
   window.card = {
     render: render,
-    del: del
+    remove: remove
   };
 })();

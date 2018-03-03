@@ -16,7 +16,7 @@
     window.common.disableElement(ALERT, CLASS_DISABLE);
   };
 
-  var showMsg = function (message) {
+  var showMessage = function (message) {
     show(message);
     setTimeout(hide, DISPLAY_TIME);
   };
@@ -24,6 +24,6 @@
   window.toast = {
     show: show,
     hide: hide,
-    showMsg: showMsg
+    showMessage: showMessage
   };
 })();

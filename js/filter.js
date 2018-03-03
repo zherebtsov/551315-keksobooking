@@ -46,22 +46,22 @@
     data = items;
   };
 
-  var isFeature = function (param) {
-    return FEATURES.includes(param);
+  var isFeature = function (parameter) {
+    return FEATURES.includes(parameter);
   };
 
   var applyFilter = function (items) {
-    var cleanFilter = delEmptyKeys(filter);
-    var filterParams = Object.keys(cleanFilter);
+    var cleanFilter = removeEmptyKeys(filter);
+    var filterParameters = Object.keys(cleanFilter);
 
-    if (filterParams.length !== 0) {
+    if (filterParameters.length !== 0) {
       var result = items.filter(function (item) {
         var isValid = true;
 
-        filterParams.forEach(function (param) {
-          var specialParam = isFeature(param) ? 'features' : param;
+        filterParameters.forEach(function (parameter) {
+          var specialParameter = isFeature(parameter) ? 'features' : parameter;
 
-          if (transformValue(param, item.offer[specialParam]) !== filter[param]) {
+          if (transformValue(parameter, item.offer[specialParameter]) !== filter[parameter]) {
             isValid = false;
           }
         });
@@ -74,20 +74,20 @@
     }
   };
 
-  var changeFilter = function (param, value) {
-    filter[param] = value;
+  var changeFilter = function (parameter, value) {
+    filter[parameter] = value;
     window.map.closePopupCard();
     window.debounce(function () {
       applyFilter(data);
     });
   };
 
-  var delEmptyKeys = function (obj) {
+  var removeEmptyKeys = function (object) {
     var result = {};
 
-    Object.keys(obj).forEach(function (key) {
-      if (obj[key]) {
-        result[key] = obj[key];
+    Object.keys(object).forEach(function (key) {
+      if (object[key]) {
+        result[key] = object[key];
       }
     });
     return result;
@@ -97,22 +97,22 @@
     var controls = Object.keys(Control);
 
     controls.forEach(function (name) {
-      var param = getFilterParam(name);
-      if (isFeature(param)) {
-        filter[param] = false;
+      var parameter = getFilterParameter(name);
+      if (isFeature(parameter)) {
+        filter[parameter] = false;
         Control[name].checked = false;
       } else {
-        filter[param] = '';
+        filter[parameter] = '';
         Control[name].value = '';
       }
     });
   };
 
-  var transformValue = function (param, value) {
-    if (isFeature(param)) {
-      return value.includes(param);
+  var transformValue = function (parameter, value) {
+    if (isFeature(parameter)) {
+      return value.includes(parameter);
     }
-    switch (param) {
+    switch (parameter) {
       case 'price':
         if (value < PRICE_LOW) {
           return 'low';
@@ -130,17 +130,17 @@
     }
   };
 
-  var getFilterParam = function (elemName) {
-    return elemName.toLowerCase();
+  var getFilterParameter = function (elementName) {
+    return elementName.toLowerCase();
   };
 
   var controls = Object.keys(Control);
   controls.forEach(function (name) {
     Control[name].addEventListener('change', function (evt) {
-      var param = getFilterParam(name);
-      var value = isFeature(param) ? evt.target.checked : evt.target.value;
+      var parameter = getFilterParameter(name);
+      var value = isFeature(parameter) ? evt.target.checked : evt.target.value;
 
-      changeFilter(param, value);
+      changeFilter(parameter, value);
     });
   });
 

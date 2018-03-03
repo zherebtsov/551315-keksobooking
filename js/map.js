@@ -14,13 +14,13 @@
   var CLASS_DISABLE = 'map--faded';
 
   var openPopupCard = function (card) {
-    window.card.del();
+    window.card.remove();
     window.card.render(card, onPopupCardCloseClick);
     document.addEventListener('keydown', onPopupCardEscPress);
   };
 
   var closePopupCard = function () {
-    window.card.del();
+    window.card.remove();
     document.removeEventListener('keydown', onPopupCardEscPress);
   };
 
@@ -45,25 +45,24 @@
   };
 
   var disable = function () {
-    window.card.del();
-    window.pin.del();
-    setCoordsMainPin(initCoordsMainPin);
+    window.card.remove();
+    window.pin.remove();
+    setCoordMainPin(initCoordsMainPin);
     window.common.disableElement(MAP, CLASS_DISABLE);
   };
 
-  var getCoordsMainPin = function () {
+  var getCoordMainPin = function () {
     var isActive = window.pageState.check();
     var box = MAP_PIN_MAIN.getBoundingClientRect();
     var width = box.width;
     var height = isActive ? box.height + MAP_PIN_MAIN_ARROW_HEIGHT : box.height;
     var x = box.x + width / 2;
     var y = isActive ? box.y + height : box.y + height / 2;
-    var coords = {
+
+    return {
       x: x + pageXOffset,
       y: y + pageYOffset
     };
-
-    return coords;
   };
 
   var onDataLoad = function (data) {
@@ -73,11 +72,11 @@
   };
 
   var onError = function (error) {
-    window.toast.showMsg('Не удалось загрузить объявления (' + error + ')');
+    window.toast.showMessage('Не удалось загрузить объявления (' + error + ')');
   };
 
   var refreshAds = function (data) {
-    window.pin.del();
+    window.pin.remove();
     window.pin.render(data, openPopupCard);
   };
 
@@ -88,7 +87,7 @@
     }
   };
 
-  var setCoordsMainPin = function (coords) {
+  var setCoordMainPin = function (coord) {
     var mapSize = MAP.getBoundingClientRect();
     var pinSize = MAP_PIN_MAIN.getBoundingClientRect();
     var topEdge = MIN_Y - pinSize.height + MAP_PIN_MAIN_ARROW_HEIGHT;
@@ -96,15 +95,15 @@
     var leftEdge = mapSize.left;
     var rigthEdge = mapSize.left + mapSize.width;
 
-    if (coords.y > topEdge && coords.y < bottomEdge) {
-      MAP_PIN_MAIN.style.top = coords.y + 'px';
+    if (coord.y > topEdge && coord.y < bottomEdge) {
+      MAP_PIN_MAIN.style.top = coord.y + 'px';
     }
 
-    if (coords.x > leftEdge && coords.x < rigthEdge) {
-      MAP_PIN_MAIN.style.left = (coords.x - mapSize.left) + 'px';
+    if (coord.x > leftEdge && coord.x < rigthEdge) {
+      MAP_PIN_MAIN.style.left = (coord.x - mapSize.left) + 'px';
     }
 
-    window.form.setAddress(getCoordsMainPin());
+    window.form.setAddress(getCoordMainPin());
   };
 
   MAP_PIN_MAIN.addEventListener('mousedown', function (evt) {
@@ -112,7 +111,7 @@
 
     init();
 
-    var prevCoordsMouse = {
+    var prevCoordMouse = {
       x: evt.clientX,
       y: evt.clientY
     };
@@ -121,37 +120,37 @@
       moveEvt.preventDefault();
 
       var shift = {
-        x: prevCoordsMouse.x - moveEvt.clientX,
-        y: prevCoordsMouse.y - moveEvt.clientY
+        x: prevCoordMouse.x - moveEvt.clientX,
+        y: prevCoordMouse.y - moveEvt.clientY
       };
 
-      prevCoordsMouse = {
+      prevCoordMouse = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
 
-      var currentCoordsMouse = {
-        x: prevCoordsMouse.x - shift.x + pageXOffset,
-        y: prevCoordsMouse.y - shift.y + pageYOffset
+      var currentCoordMouse = {
+        x: prevCoordMouse.x - shift.x + pageXOffset,
+        y: prevCoordMouse.y - shift.y + pageYOffset
       };
 
-      setCoordsMainPin(currentCoordsMouse);
+      setCoordMainPin(currentCoordMouse);
     };
 
-    var onMainPinMouseup = function (upEvt) {
+    var onMainPinMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      window.form.setAddress(getCoordsMainPin());
+      window.form.setAddress(getCoordMainPin());
       MAP.removeEventListener('mousemove', onMainPinMouseMove);
-      document.removeEventListener('mouseup', onMainPinMouseup);
+      document.removeEventListener('mouseup', onMainPinMouseUp);
     };
 
     MAP.addEventListener('mousemove', onMainPinMouseMove);
-    document.addEventListener('mouseup', onMainPinMouseup);
+    document.addEventListener('mouseup', onMainPinMouseUp);
   });
 
   var onContentLoad = function () {
-    initCoordsMainPin = getCoordsMainPin();
+    initCoordsMainPin = getCoordMainPin();
     window.form.setAddress(initCoordsMainPin);
     window.form.saveInitStateForm();
     document.removeEventListener('DOMContentLoaded', onContentLoad);
