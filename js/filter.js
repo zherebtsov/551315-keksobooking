@@ -15,9 +15,9 @@
     CONDITIONER: FORM.querySelector('#filter-conditioner')
   };
   var CLASS_DISABLE = 'map__filters--hidden';
-  var CHECKBOXS = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var LOW_PRICE = 10000;
-  var HIGH_PRICE = 50000;
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var PRICE_LOW = 10000;
+  var PRICE_HEIGHT = 50000;
 
   var filter = {
     type: '',
@@ -46,6 +46,10 @@
     data = items;
   };
 
+  var isFeature = function (param) {
+    return FEATURES.includes(param);
+  };
+
   var applyFilter = function (items) {
     var cleanFilter = delEmptyKeys(filter);
     var filterParams = Object.keys(cleanFilter);
@@ -55,7 +59,7 @@
         var isValid = true;
 
         filterParams.forEach(function (param) {
-          var specialParam = CHECKBOXS.includes(param) ? 'features' : param;
+          var specialParam = isFeature(param) ? 'features' : param;
 
           if (transformValue(param, item.offer[specialParam]) !== filter[param]) {
             isValid = false;
@@ -94,7 +98,7 @@
 
     controls.forEach(function (name) {
       var param = getFilterParam(name);
-      if (CHECKBOXS.includes(param)) {
+      if (isFeature(param)) {
         filter[param] = false;
         Control[name].checked = false;
       } else {
@@ -105,15 +109,15 @@
   };
 
   var transformValue = function (param, value) {
-    if (CHECKBOXS.includes(param)) {
+    if (isFeature(param)) {
       return value.includes(param);
     }
     switch (param) {
       case 'price':
-        if (value < LOW_PRICE) {
+        if (value < PRICE_LOW) {
           return 'low';
         }
-        if (value >= HIGH_PRICE) {
+        if (value >= PRICE_HEIGHT) {
           return 'high';
         }
         return 'middle';
@@ -134,7 +138,7 @@
   controls.forEach(function (name) {
     Control[name].addEventListener('change', function (evt) {
       var param = getFilterParam(name);
-      var value = CHECKBOXS.includes(param) ? evt.target.checked : evt.target.value;
+      var value = isFeature(param) ? evt.target.checked : evt.target.value;
 
       changeFilter(param, value);
     });
