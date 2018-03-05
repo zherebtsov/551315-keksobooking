@@ -152,7 +152,7 @@
   var onContentLoad = function () {
     initCoordsMainPin = getCoordMainPin();
     window.form.setAddress(initCoordsMainPin);
-    window.form.saveInitStateForm();
+    window.form.saveInitState();
     document.removeEventListener('DOMContentLoaded', onContentLoad);
   };
 

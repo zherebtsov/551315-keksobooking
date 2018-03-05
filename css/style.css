@@ -741,9 +741,15 @@ textarea:focus
     color: #ff5635;
 }
 
-.form__photo-container
+.form__photo-container .upload
 {
     width: 140px;
+}
+
+.form__photo-preview-container img
+{
+    margin: 0 10px 10px 0;
+    cursor: pointer;
 }
 
 .form__element--submit

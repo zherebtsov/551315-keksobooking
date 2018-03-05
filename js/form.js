@@ -2,7 +2,7 @@
 
 (function () {
   var FORM = document.querySelector('.notice__form');
-  var FORM_ELEMENTS = FORM.querySelectorAll('.form__element');
+  var FORM_ELEMENTS = FORM.querySelectorAll('fieldset');
   var Field = {
     AVATAR: FORM.querySelector('#avatar'),
     TITLE: FORM.querySelector('#title'),
@@ -18,7 +18,10 @@
   };
   var SUBMIT_BTN = FORM.querySelector('.form__submit');
   var RESET_BTN = FORM.querySelector('.form__reset');
+  var AVATAR_PREVIEW = FORM.querySelector('.notice__preview img');
+  var IMAGES_PREVIEW_CONTAINER = FORM.querySelector('.form__photo-preview-container');
   var CLASS_DISABLE = 'notice__form--disabled';
+  var IMAGE_HEIGHT = 100;
   var initState = {};
 
   var enable = function () {
@@ -43,7 +46,8 @@
       timeIn: Field.TIME_IN.value,
       timeOut: Field.TIME_OUT.value,
       roomNumber: Field.ROOM_NUMBER.value,
-      capacity: Field.CAPACITY.value
+      capacity: Field.CAPACITY.value,
+      avatarPreview: AVATAR_PREVIEW.src
     };
   };
 
@@ -58,11 +62,14 @@
     Field.CAPACITY.value = initState.capacity;
     Field.DESCRIPTION.value = '';
     Field.IMAGES.value = '';
+    AVATAR_PREVIEW.src = initState.avatarPreview;
 
     var featureElements = FORM.querySelectorAll('input[type=checkbox]');
     featureElements.forEach(function (element) {
       element.checked = false;
     });
+
+    deleteImagePreview();
   };
 
   var setFieldValue = function (fieldElement, value) {
@@ -126,6 +133,34 @@
     window.pageState.disable();
   };
 
+  var onAvatarChange = function () {
+    window.uploadImage(Field.AVATAR, function (result) {
+      AVATAR_PREVIEW.src = result[0];
+    });
+  };
+
+  var changeImageElement = function (data, index, element) {
+    element.src = data[index];
+    element.addEventListener('dragend', function () {
+      IMAGES_PREVIEW_CONTAINER.appendChild(element);
+    });
+  };
+
+  var deleteImagePreview = function () {
+    IMAGES_PREVIEW_CONTAINER.textContent = '';
+  };
+
+  var onImagesChange = function () {
+    deleteImagePreview();
+    window.uploadImage(Field.IMAGES, function (result) {
+      var imageElement = document.createElement('img');
+      imageElement.height = IMAGE_HEIGHT;
+      imageElement.setAttribute('draggable', 'true');
+
+      IMAGES_PREVIEW_CONTAINER.appendChild(window.common.createElements(result, imageElement, changeImageElement));
+    });
+  };
+
   Field.TYPE.addEventListener('change', onTypeChange);
   Field.TIME_IN.addEventListener('change', onTimeinChange);
   Field.TIME_OUT.addEventListener('change', onTimeoutChange);
@@ -136,9 +171,11 @@
   Field.TITLE.addEventListener('input', onTitleInput);
   Field.PRICE.addEventListener('input', onPriceInput);
   RESET_BTN.addEventListener('click', onResetClick);
+  Field.AVATAR.addEventListener('change', onAvatarChange);
+  Field.IMAGES.addEventListener('change', onImagesChange);
 
   window.form = {
-    saveInitStateForm: saveInitState,
+    saveInitState: saveInitState,
     setAddress: setAddress,
     field: Field,
     enable: enable,
