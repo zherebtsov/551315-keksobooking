@@ -22,6 +22,7 @@
   var IMAGES_PREVIEW_CONTAINER = FORM.querySelector('.form__photo-preview-container');
   var CLASS_DISABLE = 'notice__form--disabled';
   var IMAGE_HEIGHT = 100;
+  var draggedElement = null;
   var initState = {};
 
   var enable = function () {
@@ -139,11 +140,47 @@
     });
   };
 
+  var onImageDragStart = function (evt) {
+    draggedElement = evt.currentTarget;
+  };
+
+  var onImageDragOver = function (evt) {
+    evt.preventDefault();
+    evt.currentTarget.classList.add('drag-over');
+  };
+
+  var onImageDragLeave = function (evt) {
+    evt.currentTarget.classList.remove('drag-over');
+  };
+
+  var onImageDragEnd = function () {
+    draggedElement = null;
+  };
+
+  var onImageDrop = function (evt) {
+    var currentElement = evt.currentTarget;
+    var previousElement = currentElement.previousSibling;
+    var nextElement = currentElement.nextSibling;
+
+    evt.preventDefault();
+    currentElement.classList.remove('drag-over');
+
+    if (previousElement === draggedElement) {
+      IMAGES_PREVIEW_CONTAINER.insertBefore(draggedElement, nextElement);
+    } else {
+      IMAGES_PREVIEW_CONTAINER.insertBefore(draggedElement, currentElement);
+    }
+
+    draggedElement = null;
+  };
+
   var changeImageElement = function (data, index, element) {
     element.src = data[index];
-    element.addEventListener('dragend', function () {
-      IMAGES_PREVIEW_CONTAINER.appendChild(element);
-    });
+    element.addEventListener('dragstart', onImageDragStart, false);
+    element.addEventListener('dragend', onImageDragEnd, false);
+    element.addEventListener('dragover', onImageDragOver, false);
+    element.addEventListener('dragleave', onImageDragLeave, false);
+    element.addEventListener('drop', onImageDrop, false);
   };
 
   var deleteImagePreview = function () {
